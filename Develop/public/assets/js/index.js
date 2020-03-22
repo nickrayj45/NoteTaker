@@ -18,6 +18,7 @@ var getNotes = function () {
 
 // A function for saving a note to the db
 var saveNote = function (note) {
+  console.log("newNote from Client: ", note)
   return $.ajax({
     url: "/api/notes",
     data: note,
@@ -40,13 +41,17 @@ var renderActiveNote = function () {
   if (activeNote.id) {
     $noteTitle.attr("readonly", true);
     $noteText.attr("readonly", true);
+    $noteId.attr("readonly", true)
     $noteTitle.val(activeNote.title);
     $noteText.val(activeNote.text);
+    $noteId.val(activateId.text);
   } else {
     $noteTitle.attr("readonly", false);
     $noteText.attr("readonly", false);
+    $noteId.attr("readonly", false)
     $noteTitle.val("");
     $noteText.val("");
+    $noteId.val("");
   }
 };
 
@@ -55,7 +60,8 @@ var handleNoteSave = function () {
   var newNote = {
     // add id 
     title: $noteTitle.val(),
-    text: $noteText.val()
+    text: $noteText.val(),
+    
   };
 
   saveNote(newNote).then(function (data) {
