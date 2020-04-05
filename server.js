@@ -9,17 +9,18 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Constants, Lets and Variables
-var PORT = 4000;
+const PORT = process.env.PORT || 4000;
+
 const fs = require("fs");
 const path = require("path");
-let noteId = db.map(note => note.id);
+let noteId = db.map((note) => note.id);
 
 //GET methods to send user to the pages
-app.get("/notes", function(req, res) {
+app.get("/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
-app.get("/api/notes", function(req, res) {
+app.get("/api/notes", function (req, res) {
   // var getNote = req.body;
   // fs.WriteFile("db/db.json", JSON.stringify(getNote), function(err){
   //   console.log(err)
@@ -27,13 +28,13 @@ app.get("/api/notes", function(req, res) {
 });
 // })
 
-app.get("*", function(req, res) {
+app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 // Functions to add, save and delete notes
 
-app.post("/api/notes", function(req, res) {
+app.post("/api/notes", function (req, res) {
   let newId = 0;
   while (noteId.includes(newId)) {
     newId++;
@@ -42,7 +43,7 @@ app.post("/api/notes", function(req, res) {
   const nextNote = {
     id: newId,
     title: req.body.title,
-    text: req.body.text
+    text: req.body.text,
   };
   db.push(nextNote);
 
@@ -73,12 +74,12 @@ app.delete("/api/notes/:id", (req, res) => {
   });
 });
 
-app.post("/api/clear", function(req, res) {
+app.post("/api/clear", function (req, res) {
   notes.length = 0;
   res.json({ ok: true });
 });
 
 //activates the listener PORT
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("App listening to " + PORT);
 });
